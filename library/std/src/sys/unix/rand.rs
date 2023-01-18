@@ -60,7 +60,11 @@ mod imp {
         unsafe { getrandom(buf.as_mut_ptr().cast(), buf.len(), libc::GRND_NONBLOCK) }
     }
 
-    #[cfg(any(target_os = "espidf", target_os = "horizon"))]
+    #[cfg(any(
+        target_os = "espidf",
+        target_os = "horizon",
+        target_os = "emscripten"
+    ))]
     fn getrandom(buf: &mut [u8]) -> libc::ssize_t {
         unsafe { libc::getrandom(buf.as_mut_ptr().cast(), buf.len(), 0) }
     }
@@ -69,7 +73,8 @@ mod imp {
         target_os = "linux",
         target_os = "android",
         target_os = "espidf",
-        target_os = "horizon"
+        target_os = "horizon",
+        target_os = "emscripten"
     )))]
     fn getrandom_fill_bytes(_buf: &mut [u8]) -> bool {
         false
@@ -79,7 +84,8 @@ mod imp {
         target_os = "linux",
         target_os = "android",
         target_os = "espidf",
-        target_os = "horizon"
+        target_os = "horizon",
+        target_os = "emscripten"
     ))]
     fn getrandom_fill_bytes(v: &mut [u8]) -> bool {
         use crate::sync::atomic::{AtomicBool, Ordering};
