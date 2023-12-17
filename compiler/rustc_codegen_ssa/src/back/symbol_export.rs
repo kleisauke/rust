@@ -112,7 +112,8 @@ fn reachable_non_generics_provider(tcx: TyCtxt<'_>, _: LocalCrate) -> DefIdMap<S
             let is_builtin_fn = is_compiler_builtins
                 && symbol_export_level(tcx, def_id.to_def_id())
                     .is_below_threshold(SymbolExportLevel::C)
-                && codegen_attrs.flags.contains(CodegenFnAttrFlags::NO_MANGLE);
+                && codegen_attrs.flags.contains(CodegenFnAttrFlags::NO_MANGLE)
+                && codegen_attrs.linkage != Some(rustc_middle::mir::mono::Linkage::WeakAny);
             let used = name == "rust_eh_personality";
 
             let export_level = if special_runtime_crate {
