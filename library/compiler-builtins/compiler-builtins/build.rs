@@ -611,7 +611,7 @@ mod c {
             }
             if let Some(lib) = rt_builtins_ext.file_name() {
                 println!(
-                    "cargo::rustc-link-lib=static:+verbatim={}",
+                    "cargo::rustc-link-lib=static:+whole-archive,+verbatim={}",
                     lib.to_str().unwrap()
                 );
             }
